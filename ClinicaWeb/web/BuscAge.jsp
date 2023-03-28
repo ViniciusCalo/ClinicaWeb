@@ -1,0 +1,94 @@
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+
+         pageEncoding="UTF-8"%>
+
+<%@page import="java.sql.*"%>
+
+<%@page import="com.mysql.jdbc.Driver"%>
+
+<%@page import="config.Conexao"%>
+
+<!DOCTYPE html>
+
+<%
+
+    Statement st = null;
+
+    ResultSet rs = null;
+
+%>
+
+<html>
+
+    <head>
+
+        <html xmlns="http://www.w3.org/1999/xhtml" lang="pt-br" xml:lang="pt-br">
+
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+                <title>JSP Page</title>
+                <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous">
+                    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/js/bootstrap.bundle.min.js" integrity="sha384-qKXV1j0HvMUeCBQ+QVp7JcfGl760yU08IQ+GpUo5hlbpg51QRiuqHAJz8+BrxE/N" crossorigin="anonymous"></script>
+
+                </head>
+
+                <body>
+
+                    <h1>Busca Agendamento</h1>
+
+                    <form action="BuscAge.jsp" method="post">
+
+                        <input type="text" name="txtNome"><input type="submit" name="btnSalvar">
+
+                                </form>
+
+                                <br>
+
+                                    <br>
+
+                                       
+
+                                        <%    if (request.getParameter("btnSalvar") != null) {
+
+                                                String busca = "%" + request.getParameter("txtNome") + "%";
+
+                                                try {
+
+                                                    st = new Conexao().conectar().createStatement();
+
+                                                    rs = st.executeQuery("Select * from tbAgendamento where codMedico like'" + busca + "'");
+                                                    out.println("<table class='table table-striped'><tr>");
+
+                                                     out.println("<td>codigo</td>");                                               
+                                                     out.println("<td>data</td>");
+                                                     out.println("<td>hora</td>");
+                                                     out.println("<td>Cod Paciente</td>");
+                                                     out.println("<td>Cod Medico</td>");
+                                                     out.println("<td>Descrição</td></tr><tr>");
+                                                                                                     
+                                                    while (rs.next()) {
+
+                                                        out.println("<td>" + rs.getString(1) + "</td>");
+                                                        out.println("<td>" + rs.getString(2) + "</td>");
+                                                        out.println("<td>" + rs.getString(3) + "</td>");
+                                                        out.println("<td>" + rs.getString(4) + "</td>");
+                                                        out.println("<td>" + rs.getString(5) + "</td>");
+                                                        out.println("<td>" + rs.getString(6) + "</td></tr>");
+
+                                                    }
+
+                                                    out.println("</table>");
+
+                                                } catch (Exception e) {
+
+                                                    out.println(e);
+
+                                                }
+
+                                            }
+
+                                        %> 
+                                        <a href="index.html" class="link-dark link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">Voltar</a>
+                                        </body>
+
+                                        </html>
